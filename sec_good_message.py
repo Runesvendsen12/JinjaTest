@@ -17,13 +17,13 @@ output_dir = "output"
 os.makedirs(output_dir, exist_ok=True)
 
 env = Environment(loader=FileSystemLoader("templates/"))
-template = env.get_template("all.txt")
+template = env.get_template("export.csv")
 
-for student in students:
-    name = student["name"]
-    filename = os.path.join(output_dir, f"message_{name.lower()}.txt")
-    content = template.render(student, max_score=MAX_SCORE, test_name=TEST_NAME)
+filename = f"output/py_challenge.csv"
+context = {
+    "students" : students,
+    "max_score" : MAX_SCORE,
+}
 
-    with open(filename, mode="w", encoding="utf-8") as output:
-        output.write(content)
-        print("... wrote", filename)
+with open(filename, mode="w", encoding="utf-8") as output:
+    output.write(template.render(context))
